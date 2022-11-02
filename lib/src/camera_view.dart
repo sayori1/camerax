@@ -29,7 +29,9 @@ class CameraView extends StatelessWidget {
           child: Center(
             child: AspectRatio(
               aspectRatio: value.size.aspectRatio,
-              child: Texture(textureId: value.textureId),
+              child: Container(
+                  color: Colors.white,
+                  child: Texture(textureId: value.textureId)),
             ),
           ),
         ),
