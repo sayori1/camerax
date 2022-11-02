@@ -113,10 +113,13 @@ class CameraXHandler(private val activity: Activity, private val textureRegistry
             }
             val preview = Preview.Builder().build().apply { setSurfaceProvider(surfaceProvider) }
             // Analyzer
-            val realTimeOpts = FaceDetectorOptions.Builder()
-                    .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
-                    .build();
-            val faceScanner = FaceDetection.getClient(realTimeOpts);
+            val highAccuracyOpts = FaceDetectorOptions.Builder()
+                    .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+                    .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
+                    .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+                    .build()
+
+            val faceScanner = FaceDetection.getClient(highAccuracyOpts);
             val detectors = listOf(faceScanner);
             val analyser = MlKitAnalyzer(detectors, ImageAnalysis.COORDINATE_SYSTEM_ORIGINAL, executor){
                 val faces = it.getValue(faceScanner);

@@ -80,11 +80,17 @@ public class SwiftCameraXPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, 
             analyzing = true
             let buffer = CMSampleBufferGetImageBuffer(sampleBuffer)
             let image = VisionImage(image: buffer!.image)
-            let scanner = BarcodeScanner.barcodeScanner()
-            scanner.process(image) { [self] barcodes, error in
-                if error == nil && barcodes != nil {
-                    for barcode in barcodes! {
-                        let event: [String: Any?] = ["name": "barcode", "data": barcode.data]
+
+            let options = FaceDetectorOptions()
+            options.performanceMode = .accurate
+            options.landmarkMode = .all
+            options.classificationMode = .all
+
+            let scanner = FaceDetector.faceDetector(options: options)
+            scanner.process(image) { [self] faces, error in
+                if error == nil && faces != nil {
+                    for face in faces! {
+                        let event: [String: Any?] = ["name": "face", "data": toString(face)]
                         sink?(event)
                     }
                 }
@@ -114,7 +120,7 @@ public class SwiftCameraXPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, 
     func startNative(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         textureId = registry.register(self)
         captureSession = AVCaptureSession()
-        let position = call.arguments as! Int == 0 ? AVCaptureDevice.Position.front : .back
+        let position = AVCaptureDevice.Position.front
         if #available(iOS 10.0, *) {
             device = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: position).devices.first
         } else {

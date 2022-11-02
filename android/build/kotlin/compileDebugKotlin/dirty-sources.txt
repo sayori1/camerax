@@ -1,0 +1,3 @@
+/home/galmetov/Downloads/camerax-master/android/src/main/kotlin/dev/yanshouwang/camerax/CameraXPlugin.kt
+/home/galmetov/Downloads/camerax-master/android/src/main/kotlin/dev/yanshouwang/camerax/CameraXHandler.kt
+/home/galmetov/Downloads/camerax-master/android/src/main/kotlin/dev/yanshouwang/camerax/Util.kt
