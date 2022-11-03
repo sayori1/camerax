@@ -8,7 +8,7 @@
 import AVFoundation
 import Flutter
 import Foundation
-import MLKitBarcodeScanning
+import MLKitFaceDetection
 
 extension Error {
     func throwNative(_ result: FlutterResult) {
