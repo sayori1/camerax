@@ -128,7 +128,7 @@ class CameraXHandler(private val activity: Activity, private val textureRegistry
                 }
                 for (face in faces) {
                     val face = face as Face;
-                    sink?.success(mapOf("name" to "face", "data" to face.toString()));
+                    sink?.success(mapOf("name" to "face", "data" to face.data ));
                 }
             }
 
@@ -145,6 +145,7 @@ class CameraXHandler(private val activity: Activity, private val textureRegistry
                 val event = mapOf("name" to "torchState", "data" to state)
                 sink?.success(event)
             }
+
             // TODO: seems there's not a better way to get the final resolution
             @SuppressLint("RestrictedApi")
             val resolution = preview.attachedSurfaceResolution!!

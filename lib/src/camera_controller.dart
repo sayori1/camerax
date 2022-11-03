@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
+import 'package:camerax/src/models/face.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -23,7 +26,9 @@ abstract class CameraController {
 
   void dispose();
 
-  Stream<String> get faces;
+  Stream<Face> get faces;
+
+  var textureId;
 }
 
 class _CameraController implements CameraController {
@@ -52,10 +57,13 @@ class _CameraController implements CameraController {
   final ValueNotifier<TorchState> torchState;
 
   bool torchable;
-  late StreamController<String> facesController;
+  late StreamController<Face> facesController;
 
   @override
-  Stream<String> get faces => facesController.stream;
+  Stream<Face> get faces => facesController.stream;
+
+  @override
+  var textureId = null;
 
   _CameraController(this.facing)
       : args = ValueNotifier(null),
@@ -85,7 +93,8 @@ class _CameraController implements CameraController {
         torchState.value = state;
         break;
       case 'face':
-        facesController.add(data as String);
+        Map<String, dynamic> jsonData = new Map<String, dynamic>.from(json.decode(data));
+        facesController.add(Face.fromJson(jsonData));
         break;
       default:
         throw UnimplementedError();
@@ -150,8 +159,9 @@ class _CameraController implements CameraController {
         'CameraController methods should not be used after calling dispose.';
     assert(hashCode == id, message);
   }
-  
+
   @override
-  // TODO: implement fa
-  Stream<String> get fa => throw UnimplementedError();
+  Uint8List? takePicture() {
+    var texture = Texture(textureId: textureId);
+  }
 }

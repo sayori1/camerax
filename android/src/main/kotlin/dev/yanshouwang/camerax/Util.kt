@@ -1,8 +1,12 @@
 package dev.yanshouwang.camerax
 
 import android.graphics.Point
+import android.graphics.PointF
+import android.graphics.Rect
 import androidx.camera.core.Camera
 import androidx.camera.core.ImageProxy
+import com.google.mlkit.vision.face.Face
+import com.google.mlkit.vision.face.FaceLandmark
 
 val Any.TAG: String
     get() = javaClass.simpleName
@@ -99,6 +103,23 @@ val ImageProxy.u: ImageProxy.PlaneProxy
 
 val ImageProxy.v: ImageProxy.PlaneProxy
     get() = planes[2]
+
+val Face.data: Map<String, Any?>
+    get() = mapOf(
+            "landmarks" to allLandmarks.map{landmark -> landmark.data},
+            "boundingBox" to boundingBox.data,
+            "headEulerAngleX" to headEulerAngleX, "headEulerAngleY" to headEulerAngleY, "headEulerAngleZ" to headEulerAngleZ,
+            "rightEyeOpenProbability" to rightEyeOpenProbability, "leftEyeOpenProbability" to leftEyeOpenProbability, "smilingProbability" to smilingProbability)
+
+val Rect.data: Map<String, Int>
+    get() = mapOf("top" to top, "bottom" to bottom, "left" to left, "right" to right)
+
+val FaceLandmark.data: Map<String, Any?>
+    get() = mapOf("type" to landmarkType, "point" to position.data)
+
+val PointF.data: Map<String, Float>
+    get() = mapOf("x" to x, "y" to y)
+
 
 /*
 val Barcode.data: Map<String, Any?>

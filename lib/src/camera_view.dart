@@ -23,6 +23,7 @@ class CameraView extends StatelessWidget {
     if (value == null) {
       return Container(color: Colors.black);
     } else {
+      controller.textureId = value.textureId;
       return ClipRect(
         child: Transform.scale(
           scale: value.size.fill(MediaQuery.of(context).size),
