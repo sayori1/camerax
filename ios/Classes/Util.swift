@@ -10,7 +10,7 @@ import AVFoundation
 import Flutter
 import Foundation
 import MLKitFaceDetection
-import MLKit
+import MLKitVision
 
 extension Error {
     func throwNative(_ result: FlutterResult) {
