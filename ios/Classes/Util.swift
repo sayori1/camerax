@@ -5,10 +5,12 @@
 //  Created by 闫守旺 on 2021/2/6.
 //
 
+import UIKit
 import AVFoundation
 import Flutter
 import Foundation
 import MLKitFaceDetection
+import MLKit
 
 extension Error {
     func throwNative(_ result: FlutterResult) {
