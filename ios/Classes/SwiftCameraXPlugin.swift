@@ -1,7 +1,7 @@
 import AVFoundation
 import Flutter
 import MLKitVision
-import MLKitBarcodeScanning
+import MLKitFaceDetection
 
 public class SwiftCameraXPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, FlutterTexture, AVCaptureVideoDataOutputSampleBufferDelegate {
     
@@ -73,7 +73,7 @@ public class SwiftCameraXPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, 
         registry.textureFrameAvailable(textureId)
         
         switch analyzeMode {
-        case 1: // barcode
+        case 1:
             if analyzing {
                 break
             }
@@ -90,7 +90,7 @@ public class SwiftCameraXPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, 
             scanner.process(image) { [self] faces, error in
                 if error == nil && faces != nil {
                     for face in faces! {
-                        let event: [String: Any?] = ["name": "face", "data": toString(face)]
+                        let event: [String: Any?] = ["name": "face", "data": face.data]
                         sink?(event)
                     }
                 }

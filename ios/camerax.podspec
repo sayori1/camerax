@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'GoogleMLKit/BarcodeScanning'
+  s.dependency 'GoogleMLKit/FaceDetection'
   s.static_framework = true
   s.platform = :ios, '10.0'
   # Flutter.framework does not contain a i386 slice.
