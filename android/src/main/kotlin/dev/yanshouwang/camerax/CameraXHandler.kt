@@ -124,6 +124,7 @@ class CameraXHandler(private val activity: Activity, private val textureRegistry
             val analyser = MlKitAnalyzer(detectors, ImageAnalysis.COORDINATE_SYSTEM_ORIGINAL, executor){
                 val faces = it.getValue(faceScanner);
                 if (faces.isNullOrEmpty()) {
+                    sink?.success(mapOf("name" to "no_face", "data" to "no_face" ));
                     return@MlKitAnalyzer
                 }
                 for (face in faces) {

@@ -28,7 +28,12 @@ abstract class CameraController {
 
   Stream<Face> get faces;
 
-  var textureId;
+  //Executed each frame when a face is found
+  Function(Face)? onFaceFound;
+
+  //Executed once when no person is found
+  Function? onFaceNotFound;
+
 }
 
 class _CameraController implements CameraController {
@@ -62,8 +67,9 @@ class _CameraController implements CameraController {
   @override
   Stream<Face> get faces => facesController.stream;
 
-  @override
-  var textureId = null;
+  bool faceFound = false;
+
+
 
   _CameraController(this.facing)
       : args = ValueNotifier(null),
@@ -93,8 +99,16 @@ class _CameraController implements CameraController {
         torchState.value = state;
         break;
       case 'face':
-        Map<String, dynamic> jsonData = new Map<String, dynamic>.from(json.decode(data));
-        facesController.add(Face.fromJson(jsonData));
+        faceFound = true;
+        Face face = Face.fromJson(data);
+        facesController.add(face);
+        if(onFaceFound != null)  onFaceFound!(face);
+        break;
+      case 'no_face':
+        if(onFaceFound != null && faceFound){
+          faceFound = false;
+          if(onFaceNotFound != null)  onFaceNotFound!();
+        }
         break;
       default:
         throw UnimplementedError();
@@ -118,7 +132,7 @@ class _CameraController implements CameraController {
       state = result ? authorized : denied;
     }
     if (state != authorized) {
-      throw PlatformException(code: 'NO ACCESS');
+      throw PlatformException(code: 'NO ACCESS TO CAMERA');
     }
     // Start camera.
     final answer =
@@ -161,7 +175,8 @@ class _CameraController implements CameraController {
   }
 
   @override
-  Uint8List? takePicture() {
-    var texture = Texture(textureId: textureId);
-  }
+  Function(Face)? onFaceFound;
+
+  @override
+  Function? onFaceNotFound;
 }

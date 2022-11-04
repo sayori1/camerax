@@ -94,6 +94,10 @@ public class SwiftCameraXPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, 
                         sink?(event)
                     }
                 }
+                if error == null && faces.isEmpty {
+                    let event: [String: Any?] = ["name": "no_face", "data": "no_face"]
+                    sink?(event)
+                }
                 analyzing = false
             }
         default: // none

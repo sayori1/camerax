@@ -26,7 +26,7 @@ class Face {
     double leftEyeOpenProbability;
     double smilingProbability;
 
-    factory Face.fromJson(Map<String, dynamic> json) => Face(
+    factory Face.fromJson(Map<dynamic, dynamic> json) => Face(
         landmarks: List<Landmark>.from(json["landmarks"].map((x) => Landmark.fromJson(x))),
         boundingBox: BoundingBox.fromJson(json["boundingBox"]),
         headEulerAngleX: json["headEulerAngleX"].toDouble(),
@@ -62,7 +62,7 @@ class BoundingBox {
     int left;
     int right;
 
-    factory BoundingBox.fromJson(Map<String, dynamic> json) => BoundingBox(
+    factory BoundingBox.fromJson(Map<dynamic, dynamic> json) => BoundingBox(
         top: json["top"],
         bottom: json["bottom"],
         left: json["left"],
@@ -86,7 +86,7 @@ class Landmark {
     int type;
     Point point;
 
-    factory Landmark.fromJson(Map<String, dynamic> json) => Landmark(
+    factory Landmark.fromJson(Map<dynamic, dynamic> json) => Landmark(
         type: json["type"],
         point: Point.fromJson(json["point"]),
     );
@@ -106,7 +106,7 @@ class Point {
     double x;
     double y;
 
-    factory Point.fromJson(Map<String, dynamic> json) => Point(
+    factory Point.fromJson(Map<dynamic, dynamic> json) => Point(
         x: json["x"].toDouble(),
         y: json["y"].toDouble(),
     );
