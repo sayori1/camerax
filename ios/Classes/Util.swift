@@ -79,7 +79,21 @@ extension Face{
             "leftEyeOpenProbability": leftEyeOpenProbability,
             "smilingProbability": smilingProbability,
             "boundingBox" : frame.data,
-            "landmarks": landmarks.map({$0.data})
+            "landmarks": landmarks.map({$0.data}),
+            "contours": [
+                "face": self.contour(ofType: .face)?.data,
+                "leftEyebrowBottom": self.contour(ofType: .leftEyebrowBottom)?.data,
+                "leftEyebrowTop": self.contour(ofType: .leftEyebrowTop)?.data,
+                "lowerLipBottom": self.contour(ofType: .lowerLipBottom)?.data,
+                "lowerLipTop": self.contour(ofType: .lowerLipTop)?.data,
+                "noseBottom": self.contour(ofType: .noseBottom)?.data,
+                "noseBridge": self.contour(ofType: .noseBridge)?.data,
+                "rightEye": self.contour(ofType: .rightEye)?.data,
+                "rightEyebrowBottom": self.contour(ofType: .rightEyebrowBottom)?.data,
+                "rightEyebrowTop": self.contour(ofType: .rightEyebrowTop)?.data,
+                "upperLipBottom": self.contour(ofType: .upperLipBottom)?.data,
+                "upperLipTop": self.contour(ofType: .upperLipTop)?.data,
+            ]
         ]
     }
 }
@@ -109,6 +123,14 @@ extension VisionPoint{
         return [
             "x": x,
             "y": y
+        ]
+    }
+}
+
+extension FaceContour{
+    var data:[String: Any?]{
+        return [
+            "points": self.points.map({$0.data})
         ]
     }
 }
