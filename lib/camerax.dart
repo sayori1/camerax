@@ -5,3 +5,4 @@ export 'src/camera_controller.dart';
 export 'src/camera_facing.dart';
 export 'src/camera_view.dart';
 export 'src/torch_state.dart';
+export 'src/models/face.dart';
