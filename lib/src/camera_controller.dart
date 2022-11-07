@@ -33,6 +33,8 @@ abstract class CameraController {
 
   //Executed once when no person is found
   Function? onFaceNotFound;
+
+  Size? size;
 }
 
 class _CameraController implements CameraController {
@@ -65,6 +67,8 @@ class _CameraController implements CameraController {
 
   @override
   Stream<Face> get faces => facesController.stream;
+
+  Size? size;
 
   bool faceFound = false;
 
@@ -138,8 +142,8 @@ class _CameraController implements CameraController {
     final answer =
         await method.invokeMapMethod<String, dynamic>('start', facing.index);
     final textureId = answer?['textureId'];
-    final size = toSize(answer?['size']);
-    args.value = CameraArgs(textureId, size);
+    size = toSize(answer?['size']);
+    args.value = CameraArgs(textureId, size!);
     torchable = answer?['torchable'];
   }
 
