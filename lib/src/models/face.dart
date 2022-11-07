@@ -67,17 +67,17 @@ class Contours{
     required this.upperLipTop,
   });
 
-  late final List<Point> face;
-  late final List<Point> leftEye;
-  late final List<Point> leftEyebrowBottom;
-  late final List<Point> lowerLipTop;
-  late final List<Point> noseBottom;
-  late final List<Point> noseBridge;
-  late final List<Point> rightEye;
-  late final List<Point> rightEyebrowBottom;
-  late final List<Point> rightEyebrowTop;
-  late final List<Point> upperLipBottom;
-  late final List<Point> upperLipTop;
+  late final List<Offset> face;
+  late final List<Offset> leftEye;
+  late final List<Offset> leftEyebrowBottom;
+  late final List<Offset> lowerLipTop;
+  late final List<Offset> noseBottom;
+  late final List<Offset> noseBridge;
+  late final List<Offset> rightEye;
+  late final List<Offset> rightEyebrowBottom;
+  late final List<Offset> rightEyebrowTop;
+  late final List<Offset> upperLipBottom;
+  late final List<Offset> upperLipTop;
 }
 
 class BoundingBox {
