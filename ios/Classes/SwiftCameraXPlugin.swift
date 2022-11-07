@@ -85,14 +85,13 @@ public class SwiftCameraXPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, 
             options.performanceMode = .accurate
             options.landmarkMode = .all
             options.classificationMode = .all
+            options.contourMode = .all
 
             let scanner = FaceDetector.faceDetector(options: options)
             scanner.process(image) { [self] faces, error in
                 if error == nil && faces != nil {
-                    for face in faces! {
-                        let event: [String: Any?] = ["name": "face", "data": face.data]
-                        sink?(event)
-                    }
+                    let event: [String: Any?] = ["name": "face", "data": faces.map{$0.data}]
+                    sink?(event)
                 }
                 if error == null && faces.isEmpty {
                     let event: [String: Any?] = ["name": "no_face", "data": "no_face"]

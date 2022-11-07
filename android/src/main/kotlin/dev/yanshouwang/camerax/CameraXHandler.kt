@@ -116,7 +116,7 @@ class CameraXHandler(private val activity: Activity, private val textureRegistry
             val highAccuracyOpts = FaceDetectorOptions.Builder()
                     .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
                     .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
-                    .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+                    .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL).setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
                     .build()
 
             val faceScanner = FaceDetection.getClient(highAccuracyOpts);
@@ -127,10 +127,7 @@ class CameraXHandler(private val activity: Activity, private val textureRegistry
                     sink?.success(mapOf("name" to "no_face", "data" to "no_face" ));
                     return@MlKitAnalyzer
                 }
-                for (face in faces) {
-                    val face = face as Face;
-                    sink?.success(mapOf("name" to "face", "data" to face.data ));
-                }
+                sink?.success(mapOf("name" to "face", "data" to faces.map {face -> face.data} ));
             }
 
             val analysis = ImageAnalysis.Builder()

@@ -6,6 +6,7 @@ import android.graphics.Rect
 import androidx.camera.core.Camera
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.face.Face
+import com.google.mlkit.vision.face.FaceContour
 import com.google.mlkit.vision.face.FaceLandmark
 
 val Any.TAG: String
@@ -109,7 +110,23 @@ val Face.data: Map<String, Any?>
             "landmarks" to allLandmarks.map{landmark -> landmark.data},
             "boundingBox" to boundingBox.data,
             "headEulerAngleX" to headEulerAngleX, "headEulerAngleY" to headEulerAngleY, "headEulerAngleZ" to headEulerAngleZ,
-            "rightEyeOpenProbability" to rightEyeOpenProbability, "leftEyeOpenProbability" to leftEyeOpenProbability, "smilingProbability" to smilingProbability)
+            "rightEyeOpenProbability" to rightEyeOpenProbability, "leftEyeOpenProbability" to leftEyeOpenProbability, "smilingProbability" to smilingProbability,
+            "contours" to mapOf(
+                    "face" to getContour(FaceContour.FACE)?.data,
+                    "leftEye" to getContour(FaceContour.LEFT_EYE)?.data,
+                    "leftEyebrowBottom" to getContour(FaceContour.LEFT_EYEBROW_BOTTOM)?.data,
+                    "leftEyebrowTop" to getContour(FaceContour.LEFT_EYEBROW_TOP)?.data,
+                    "lowerLipBottom" to getContour(FaceContour.LOWER_LIP_BOTTOM)?.data,
+                    "lowerLipTop" to getContour(FaceContour.LOWER_LIP_TOP)?.data,
+                    "noseBottom" to getContour(FaceContour.NOSE_BOTTOM)?.data,
+                    "noseBridge" to getContour(FaceContour.NOSE_BRIDGE)?.data,
+                    "rightEye" to getContour(FaceContour.RIGHT_EYE)?.data,
+                    "rightEyebrowBottom" to getContour(FaceContour.RIGHT_EYEBROW_BOTTOM)?.data,
+                    "rightEyebrowTop" to getContour(FaceContour.RIGHT_EYEBROW_TOP)?.data,
+                    "upperLipBottom" to getContour(FaceContour.UPPER_LIP_BOTTOM)?.data,
+                    "upperLipTop" to getContour(FaceContour.UPPER_LIP_TOP)?.data,
+                    )
+            )
 
 val Rect.data: Map<String, Int>
     get() = mapOf("top" to top, "bottom" to bottom, "left" to left, "right" to right)
@@ -119,6 +136,11 @@ val FaceLandmark.data: Map<String, Any?>
 
 val PointF.data: Map<String, Float>
     get() = mapOf("x" to x, "y" to y)
+
+val FaceContour.data: Map<String, Any?>
+    get() = mapOf(
+            "points" to points.map{point -> point.data}
+    )
 
 
 /*

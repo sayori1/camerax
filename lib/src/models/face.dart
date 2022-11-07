@@ -15,6 +15,7 @@ class Face {
         required this.rightEyeOpenProbability,
         required this.leftEyeOpenProbability,
         required this.smilingProbability,
+        required this.contours
     });
 
     List<Landmark> landmarks;
@@ -25,6 +26,7 @@ class Face {
     double rightEyeOpenProbability;
     double leftEyeOpenProbability;
     double smilingProbability;
+    Contours contours;
 
     factory Face.fromJson(Map<dynamic, dynamic> json) => Face(
         landmarks: List<Landmark>.from(json["landmarks"].map((x) => Landmark.fromJson(x))),
@@ -35,6 +37,19 @@ class Face {
         rightEyeOpenProbability: json["rightEyeOpenProbability"].toDouble(),
         leftEyeOpenProbability: json["leftEyeOpenProbability"].toDouble(),
         smilingProbability: json["smilingProbability"].toDouble(),
+        contours: Contours(
+          face: json['contours']['face']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          leftEye: json['contours']['leftEye']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          leftEyebrowBottom: json['contours']['leftEyebrowBottom']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          lowerLipTop: json['contours']['lowerLipTop']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          noseBottom: json['contours']['noseBottom']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          noseBridge: json['contours']['noseBridge']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          rightEye: json['contours']['rightEye']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          rightEyebrowBottom: json['contours']['rightEyebrowBottom']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          rightEyebrowTop: json['contours']['rightEyebrowTop']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          upperLipBottom: json['contours']['upperLipBottom']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          upperLipTop: json['contours']['upperLipTop']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          )
     );
 
     Map<String, dynamic> toJson() => {
@@ -47,6 +62,34 @@ class Face {
         "leftEyeOpenProbability": leftEyeOpenProbability,
         "smilingProbability": smilingProbability,
     };
+}
+
+class Contours{
+  Contours({
+    required this.face,
+    required this.leftEye,
+    required this.leftEyebrowBottom,
+    required this.lowerLipTop,
+    required this.noseBottom,
+    required this.noseBridge,
+    required this.rightEye,
+    required this.rightEyebrowBottom,
+    required this.rightEyebrowTop,
+    required this.upperLipBottom,
+    required this.upperLipTop,
+  });
+
+  late final List<Point> face;
+  late final List<Point> leftEye;
+  late final List<Point> leftEyebrowBottom;
+  late final List<Point> lowerLipTop;
+  late final List<Point> noseBottom;
+  late final List<Point> noseBridge;
+  late final List<Point> rightEye;
+  late final List<Point> rightEyebrowBottom;
+  late final List<Point> rightEyebrowTop;
+  late final List<Point> upperLipBottom;
+  late final List<Point> upperLipTop;
 }
 
 class BoundingBox {

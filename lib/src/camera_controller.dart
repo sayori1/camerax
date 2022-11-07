@@ -29,11 +29,10 @@ abstract class CameraController {
   Stream<Face> get faces;
 
   //Executed each frame when a face is found
-  Function(Face)? onFaceFound;
+  Function(List<Face>)? onFaceFound;
 
   //Executed once when no person is found
   Function? onFaceNotFound;
-
 }
 
 class _CameraController implements CameraController {
@@ -69,8 +68,6 @@ class _CameraController implements CameraController {
 
   bool faceFound = false;
 
-
-
   _CameraController(this.facing)
       : args = ValueNotifier(null),
         torchState = ValueNotifier(TorchState.off),
@@ -100,14 +97,17 @@ class _CameraController implements CameraController {
         break;
       case 'face':
         faceFound = true;
-        Face face = Face.fromJson(data);
-        facesController.add(face);
-        if(onFaceFound != null)  onFaceFound!(face);
+
+        List<Face> faces = data.map<Face>((face) {
+          return Face.fromJson(face);
+        }).toList();
+        
+        if (onFaceFound != null) onFaceFound!(faces);
         break;
       case 'no_face':
-        if(onFaceFound != null && faceFound){
+        if (onFaceFound != null && faceFound) {
           faceFound = false;
-          if(onFaceNotFound != null)  onFaceNotFound!();
+          if (onFaceNotFound != null) onFaceNotFound!();
         }
         break;
       default:
@@ -175,7 +175,7 @@ class _CameraController implements CameraController {
   }
 
   @override
-  Function(Face)? onFaceFound;
+  Function(List<Face>)? onFaceFound;
 
   @override
   Function? onFaceNotFound;
