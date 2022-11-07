@@ -1,9 +1,8 @@
 
 import 'dart:convert';
+import 'dart:html';
 
-Face faceFromJson(String str) => Face.fromJson(json.decode(str));
-
-String faceToJson(Face data) => json.encode(data.toJson());
+import 'package:flutter/painting.dart';
 
 class Face {
     Face({
@@ -38,30 +37,19 @@ class Face {
         leftEyeOpenProbability: json["leftEyeOpenProbability"].toDouble(),
         smilingProbability: json["smilingProbability"].toDouble(),
         contours: Contours(
-          face: json['contours']['face']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
-          leftEye: json['contours']['leftEye']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
-          leftEyebrowBottom: json['contours']['leftEyebrowBottom']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
-          lowerLipTop: json['contours']['lowerLipTop']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
-          noseBottom: json['contours']['noseBottom']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
-          noseBridge: json['contours']['noseBridge']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
-          rightEye: json['contours']['rightEye']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
-          rightEyebrowBottom: json['contours']['rightEyebrowBottom']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
-          rightEyebrowTop: json['contours']['rightEyebrowTop']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
-          upperLipBottom: json['contours']['upperLipBottom']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
-          upperLipTop: json['contours']['upperLipTop']['points'].map<Point>((x) => Point.fromJson(x)).toList(),
+          face: json['contours']['face']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
+          leftEye: json['contours']['leftEye']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
+          leftEyebrowBottom: json['contours']['leftEyebrowBottom']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
+          lowerLipTop: json['contours']['lowerLipTop']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
+          noseBottom: json['contours']['noseBottom']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
+          noseBridge: json['contours']['noseBridge']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
+          rightEye: json['contours']['rightEye']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
+          rightEyebrowBottom: json['contours']['rightEyebrowBottom']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
+          rightEyebrowTop: json['contours']['rightEyebrowTop']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
+          upperLipBottom: json['contours']['upperLipBottom']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
+          upperLipTop: json['contours']['upperLipTop']['points'].map<Offset>((x) => Offset(x['x'].toDouble(), x['y'].toDouble() )).toList(),
           )
     );
-
-    Map<String, dynamic> toJson() => {
-        "landmarks": List<dynamic>.from(landmarks.map((x) => x.toJson())),
-        "boundingBox": boundingBox.toJson(),
-        "headEulerAngleX": headEulerAngleX,
-        "headEulerAngleY": headEulerAngleY,
-        "headEulerAngleZ": headEulerAngleZ,
-        "rightEyeOpenProbability": rightEyeOpenProbability,
-        "leftEyeOpenProbability": leftEyeOpenProbability,
-        "smilingProbability": smilingProbability,
-    };
 }
 
 class Contours{
@@ -127,35 +115,10 @@ class Landmark {
     });
 
     int type;
-    Point point;
+    Offset point;
 
     factory Landmark.fromJson(Map<dynamic, dynamic> json) => Landmark(
         type: json["type"],
-        point: Point.fromJson(json["point"]),
+        point: Offset(json['point']['x'], json['point']['y'])
     );
-
-    Map<String, dynamic> toJson() => {
-        "type": type,
-        "point": point.toJson(),
-    };
-}
-
-class Point {
-    Point({
-        required this.x,
-        required this.y,
-    });
-
-    double x;
-    double y;
-
-    factory Point.fromJson(Map<dynamic, dynamic> json) => Point(
-        x: json["x"].toDouble(),
-        y: json["y"].toDouble(),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "x": x,
-        "y": y,
-    };
 }
