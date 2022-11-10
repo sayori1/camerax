@@ -1,29 +1,29 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml:1:1-5:12
-INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml:1:1-5:12
-INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml:1:1-5:12
+ADDED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml:1:1-5:12
+INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml:1:1-5:12
+INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml:1:1-5:12
 	package
-		ADDED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml:2:5-38
-		INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
-		INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
+		ADDED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml:2:5-38
+		INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
+		INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml:1:11-69
+		ADDED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml:1:11-69
 uses-permission#android.permission.CAMERA
-ADDED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml:4:5-65
+ADDED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml:4:5-65
 	android:name
-		ADDED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml:4:22-62
+		ADDED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml:4:22-62
 uses-sdk
-INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
-INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
-INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
-INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
+INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
+INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
+INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
+INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
-		ADDED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
-		INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
+		INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
+		ADDED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
+		INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
-		ADDED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
-		INJECTED from /home/galmetov/Downloads/camerax-master/android/src/main/AndroidManifest.xml
+		INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
+		ADDED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml
+		INJECTED from /home/galmetov/Downloads/camerax-main/android/src/main/AndroidManifest.xml

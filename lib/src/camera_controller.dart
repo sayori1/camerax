@@ -35,6 +35,8 @@ abstract class CameraController {
   Function? onFaceNotFound;
 
   Size? size;
+
+  void takePicture();
 }
 
 class _CameraController implements CameraController {
@@ -105,7 +107,7 @@ class _CameraController implements CameraController {
         List<Face> faces = data.map<Face>((face) {
           return Face.fromJson(face);
         }).toList();
-        
+
         if (onFaceFound != null) onFaceFound!(faces);
         break;
       case 'no_face':
@@ -113,6 +115,12 @@ class _CameraController implements CameraController {
           faceFound = false;
           if (onFaceNotFound != null) onFaceNotFound!();
         }
+        break;
+      case 'photoSuccess':
+        debugger();
+        break;
+      case 'photoError':
+        debugger();
         break;
       default:
         throw UnimplementedError();
@@ -183,4 +191,8 @@ class _CameraController implements CameraController {
 
   @override
   Function? onFaceNotFound;
+
+  void takePicture() {
+    method.invokeMethod("cameraCapture");
+  }
 }

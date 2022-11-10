@@ -4,19 +4,18 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Environment
 import android.view.Surface
+import android.widget.Toast
 import androidx.annotation.IntDef
 import androidx.annotation.NonNull
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import io.flutter.plugin.common.EventChannel
@@ -24,6 +23,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.view.TextureRegistry
+import java.io.File
 
 class CameraXHandler(private val activity: Activity, private val textureRegistry: TextureRegistry) :
     MethodChannel.MethodCallHandler, EventChannel.StreamHandler, PluginRegistry.RequestPermissionsResultListener {
@@ -38,6 +38,8 @@ class CameraXHandler(private val activity: Activity, private val textureRegistry
     private var camera: Camera? = null
     private var textureEntry: TextureRegistry.SurfaceTextureEntry? = null
 
+    private var imageCapture: ImageCapture? = null;
+
     @AnalyzeMode
     private var analyzeMode: Int = AnalyzeMode.NONE
 
@@ -49,6 +51,7 @@ class CameraXHandler(private val activity: Activity, private val textureRegistry
             "torch" -> torchNative(call, result)
             "analyze" -> analyzeNative(call, result)
             "stop" -> stopNative(result)
+            "cameraCapture" -> cameraCapture(result)
             else -> result.notImplemented()
         }
     }
@@ -67,6 +70,30 @@ class CameraXHandler(private val activity: Activity, private val textureRegistry
         grantResults: IntArray
     ): Boolean {
         return listener?.onRequestPermissionsResult(requestCode, permissions, grantResults) ?: false
+    }
+
+    private fun cameraCapture(result: MethodChannel.Result){
+        val outputDir: File = ContextCompat.getExternalCacheDirs(activity)[0]
+        val outputFile = File.createTempFile("image", ".jpg", outputDir)
+
+        // Create output options object which contains file + metadata
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(outputFile).build()
+
+        // Set up image capture listener, which is triggered after photo has
+        // been taken
+        imageCapture!!.takePicture(
+                outputOptions,
+                ContextCompat.getMainExecutor(activity),
+                object : ImageCapture.OnImageSavedCallback {
+                    override fun onError(exc: ImageCaptureException) {
+                        sink?.success(mapOf("name" to "photoError", "data" to exc.toString() ));
+                    }
+
+                    override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                        sink?.success(mapOf("name" to "photoSuccess", "data" to output.savedUri.toString() ));
+                    }
+                })
+        result.success("Success");
     }
 
     private fun stateNative(result: MethodChannel.Result) {
@@ -143,6 +170,10 @@ class CameraXHandler(private val activity: Activity, private val textureRegistry
                 val event = mapOf("name" to "torchState", "data" to state)
                 sink?.success(event)
             }
+
+            imageCapture = ImageCapture.Builder().build()
+            cameraProvider!!.bindToLifecycle(
+                    owner, selector, preview, imageCapture)
 
             // TODO: seems there's not a better way to get the final resolution
             @SuppressLint("RestrictedApi")
