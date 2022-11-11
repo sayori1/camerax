@@ -34,6 +34,8 @@ abstract class CameraController {
   //Executed once when no person is found
   Function? onFaceNotFound;
 
+  Function(String path)? onPhotoCaptured;
+
   Size? size;
 
   void takePicture();
@@ -73,6 +75,8 @@ class _CameraController implements CameraController {
   Size? size;
 
   bool faceFound = false;
+
+  Function(String)? onPhotoCaptured;
 
   _CameraController(this.facing)
       : args = ValueNotifier(null),
@@ -117,10 +121,11 @@ class _CameraController implements CameraController {
         }
         break;
       case 'photoSuccess':
-        debugger();
+        if(onPhotoCaptured != null)
+          onPhotoCaptured!(data);
         break;
       case 'photoError':
-        debugger();
+
         break;
       default:
         throw UnimplementedError();
