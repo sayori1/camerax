@@ -34,11 +34,9 @@ abstract class CameraController {
   //Executed once when no person is found
   Function? onFaceNotFound;
 
-  Function(String path)? onPhotoCaptured;
-
   Size? size;
 
-  void takePicture();
+  Future<String> takePicture();
 }
 
 class _CameraController implements CameraController {
@@ -76,7 +74,9 @@ class _CameraController implements CameraController {
 
   bool faceFound = false;
 
-  Function(String)? onPhotoCaptured;
+  String? path;
+
+  bool _isActive = false;
 
   _CameraController(this.facing)
       : args = ValueNotifier(null),
@@ -121,11 +121,10 @@ class _CameraController implements CameraController {
         }
         break;
       case 'photoSuccess':
-        if(onPhotoCaptured != null)
-          onPhotoCaptured!(data);
+        path = data;
         break;
       case 'photoError':
-
+        path = "error";
         break;
       default:
         throw UnimplementedError();
@@ -197,7 +196,22 @@ class _CameraController implements CameraController {
   @override
   Function? onFaceNotFound;
 
-  void takePicture() {
+  Future<String> takePicture() async {
+    if(_isActive) throw 'The camera is capturing already';
+    _isActive = true;
+
     method.invokeMethod("cameraCapture");
+
+    while(path == null) await Future.delayed(Duration(milliseconds: 100));
+
+    if(path == "error")
+      throw "Unable to make photo";
+    
+    String _path = path!;
+    _isActive = false;
+    path = null;
+    
+    return _path;
   }
+
 }
