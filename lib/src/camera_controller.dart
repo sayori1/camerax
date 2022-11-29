@@ -21,6 +21,8 @@ abstract class CameraXController {
 
   ValueNotifier<CameraArgs?> get args;
   Stream<List<Face>?> get faces;
+
+  Size? size;
 }
 
 class _CameraXController implements CameraXController {
