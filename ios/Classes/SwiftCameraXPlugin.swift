@@ -90,10 +90,10 @@ public class SwiftCameraXPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, 
             let scanner = FaceDetector.faceDetector(options: options)
             scanner.process(image) { [self] faces, error in
                 if error == nil && faces != nil {
-                    let event: [String: Any?] = ["name": "face", "data": faces.map{$0.data}]
+                    let event: [String: Any?] = ["name": "face", "data": faces?.map{$0}]
                     sink?(event)
                 }
-                if error == null && faces.isEmpty {
+                else {
                     let event: [String: Any?] = ["name": "no_face", "data": "no_face"]
                     sink?(event)
                 }

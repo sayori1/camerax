@@ -1,45 +1,29 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:camerax/src/models/face.dart';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
-import 'camera_args.dart';
-import 'camera_facing.dart';
-import 'torch_state.dart';
-import 'util.dart';
+import 'models/camera_args.dart';
+import 'models/camera_facing.dart';
+import 'models/face.dart';
+import 'models/torch_state.dart';
+import 'models/util.dart';
 
-/// A camera controller.
-abstract class CameraController {
-  ValueNotifier<CameraArgs?> get args;
-
-  ValueNotifier<TorchState> get torchState;
-
-  factory CameraController([CameraFacing facing = CameraFacing.back]) =>
-      _CameraController(facing);
+abstract class CameraXController {
+  factory CameraXController([CameraFacing facing = CameraFacing.back]) =>
+      _CameraXController(facing);
 
   Future<void> startAsync();
+  Future<File> takePicture();
 
   void torch();
-
   void dispose();
 
-  Stream<Face> get faces;
-
-  //Executed each frame when a face is found
-  Function(List<Face>)? onFaceFound;
-
-  //Executed once when no person is found
-  Function? onFaceNotFound;
-
-  Size? size;
-
-  Future<String> takePicture();
+  ValueNotifier<CameraArgs?> get args;
+  Stream<List<Face>?> get faces;
 }
 
-class _CameraController implements CameraController {
+class _CameraXController implements CameraXController {
   //По этому каналу отправляем вызовы методов
   static const MethodChannel method =
       MethodChannel('yanshouwang.dev/camerax/method');
@@ -51,7 +35,6 @@ class _CameraController implements CameraController {
   static const undetermined = 0;
   static const authorized = 1;
   static const denied = 2;
-
   static const analyze_none = 0;
   static const analyze_face = 1;
 
@@ -61,24 +44,19 @@ class _CameraController implements CameraController {
   final CameraFacing facing;
   @override
   final ValueNotifier<CameraArgs?> args;
-  @override
   final ValueNotifier<TorchState> torchState;
 
-  bool torchable;
-  late StreamController<Face> facesController;
-
   @override
-  Stream<Face> get faces => facesController.stream;
+  Stream<List<Face>?> get faces => facesController.stream;
+  late StreamController<List<Face>?> facesController;
 
   Size? size;
-
-  bool faceFound = false;
-
   String? path;
-
+  bool torchable;
+  bool faceFound = false;
   bool _isActive = false;
 
-  _CameraController(this.facing)
+  _CameraXController(this.facing)
       : args = ValueNotifier(null),
         torchState = ValueNotifier(TorchState.off),
         torchable = false {
@@ -100,6 +78,7 @@ class _CameraController implements CameraController {
   void handleEvent(Map<dynamic, dynamic> event) {
     final name = event['name'];
     final data = event['data'];
+    print(name);
     switch (name) {
       case 'torchState':
         final state = TorchState.values[data];
@@ -107,24 +86,20 @@ class _CameraController implements CameraController {
         break;
       case 'face':
         faceFound = true;
-
         List<Face> faces = data.map<Face>((face) {
           return Face.fromJson(face);
         }).toList();
+        facesController.add(faces);
 
-        if (onFaceFound != null) onFaceFound!(faces);
         break;
       case 'no_face':
-        if (onFaceFound != null && faceFound) {
-          faceFound = false;
-          if (onFaceNotFound != null) onFaceNotFound!();
-        }
+        facesController.add(null);
         break;
       case 'photoSuccess':
         path = data;
         break;
       case 'photoError':
-        path = "error";
+        path = 'error';
         break;
       default:
         throw UnimplementedError();
@@ -141,7 +116,6 @@ class _CameraController implements CameraController {
   @override
   Future<void> startAsync() async {
     ensure('startAsync');
-    // Check authorization state.
     var state = await method.invokeMethod('state');
     if (state == undetermined) {
       final result = await method.invokeMethod('request');
@@ -191,27 +165,21 @@ class _CameraController implements CameraController {
   }
 
   @override
-  Function(List<Face>)? onFaceFound;
-
-  @override
-  Function? onFaceNotFound;
-
-  Future<String> takePicture() async {
-    if(_isActive) throw 'The camera is capturing already';
+  Future<File> takePicture() async {
+    if (_isActive) throw Exception('The camera is capturing already');
     _isActive = true;
 
-    method.invokeMethod("cameraCapture");
+    await method.invokeMethod('cameraCapture');
 
-    while(path == null) await Future.delayed(Duration(milliseconds: 100));
+    while (path == null) {
+      await Future.delayed(Duration(milliseconds: 100));
+    }
+    if (path == 'error') throw Exception('Unable to make photo');
 
-    if(path == "error")
-      throw "Unable to make photo";
-    
-    String _path = path!;
+    var _path = path!;
     _isActive = false;
     path = null;
-    
-    return _path;
-  }
 
+    return File.fromUri(Uri.parse(_path));
+  }
 }

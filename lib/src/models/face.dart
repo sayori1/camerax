@@ -1,18 +1,17 @@
-import 'dart:convert';
-
 import 'package:flutter/painting.dart';
 
 class Face {
-  Face(
-      {required this.landmarks,
-      required this.boundingBox,
-      required this.headEulerAngleX,
-      required this.headEulerAngleY,
-      required this.headEulerAngleZ,
-      required this.rightEyeOpenProbability,
-      required this.leftEyeOpenProbability,
-      required this.smilingProbability,
-      required this.contours});
+  Face({
+    required this.landmarks,
+    required this.boundingBox,
+    required this.headEulerAngleX,
+    required this.headEulerAngleY,
+    required this.headEulerAngleZ,
+    required this.rightEyeOpenProbability,
+    required this.leftEyeOpenProbability,
+    required this.smilingProbability,
+    required this.contours,
+  });
 
   List<Landmark> landmarks;
   BoundingBox boundingBox;
@@ -25,17 +24,19 @@ class Face {
   Contours? contours;
 
   factory Face.fromJson(Map<dynamic, dynamic> json) {
-    if (json['contours']['face'] != null)
+    if (json['contours']['face'] != null) {
       return Face(
           landmarks: List<Landmark>.from(
-              json["landmarks"].map((x) => Landmark.fromJson(x))),
-          boundingBox: BoundingBox.fromJson(json["boundingBox"]),
-          headEulerAngleX: json["headEulerAngleX"].toDouble(),
-          headEulerAngleY: json["headEulerAngleY"].toDouble(),
-          headEulerAngleZ: json["headEulerAngleZ"].toDouble(),
-          rightEyeOpenProbability: (json["rightEyeOpenProbability"] ?? 0).toDouble(),
-          leftEyeOpenProbability: (json["leftEyeOpenProbability"] ?? 0).toDouble(),
-          smilingProbability: (json["smilingProbability"] ?? 0).toDouble(),
+              json['landmarks'].map((x) => Landmark.fromJson(x))),
+          boundingBox: BoundingBox.fromJson(json['boundingBox']),
+          headEulerAngleX: json['headEulerAngleX'].toDouble(),
+          headEulerAngleY: json['headEulerAngleY'].toDouble(),
+          headEulerAngleZ: json['headEulerAngleZ'].toDouble(),
+          rightEyeOpenProbability:
+              (json['rightEyeOpenProbability'] ?? 0).toDouble(),
+          leftEyeOpenProbability:
+              (json['leftEyeOpenProbability'] ?? 0).toDouble(),
+          smilingProbability: (json['smilingProbability'] ?? 0).toDouble(),
           contours: Contours(
             face: json['contours']['face']['points']
                 .map<Offset>(
@@ -82,18 +83,19 @@ class Face {
                     (x) => Offset(x['x'].toDouble(), x['y'].toDouble()))
                 .toList(),
           ));
-    else {
+    } else {
       return Face(
-          landmarks: List<Landmark>.from(
-              json["landmarks"].map((x) => Landmark.fromJson(x))),
-          boundingBox: BoundingBox.fromJson(json["boundingBox"]),
-          headEulerAngleX: json["headEulerAngleX"].toDouble(),
-          headEulerAngleY: json["headEulerAngleY"].toDouble(),
-          headEulerAngleZ: json["headEulerAngleZ"].toDouble(),
-          rightEyeOpenProbability: json["rightEyeOpenProbability"].toDouble(),
-          leftEyeOpenProbability: json["leftEyeOpenProbability"].toDouble(),
-          smilingProbability: json["smilingProbability"].toDouble(),
-          contours: null);
+        landmarks: List<Landmark>.from(
+            json['landmarks'].map((x) => Landmark.fromJson(x))),
+        boundingBox: BoundingBox.fromJson(json['boundingBox']),
+        headEulerAngleX: json['headEulerAngleX'].toDouble(),
+        headEulerAngleY: json['headEulerAngleY'].toDouble(),
+        headEulerAngleZ: json['headEulerAngleZ'].toDouble(),
+        rightEyeOpenProbability: json['rightEyeOpenProbability'].toDouble(),
+        leftEyeOpenProbability: json['leftEyeOpenProbability'].toDouble(),
+        smilingProbability: json['smilingProbability'].toDouble(),
+        contours: null,
+      );
     }
   }
 }
@@ -140,17 +142,17 @@ class BoundingBox {
   int right;
 
   factory BoundingBox.fromJson(Map<dynamic, dynamic> json) => BoundingBox(
-        top: json["top"],
-        bottom: json["bottom"],
-        left: json["left"],
-        right: json["right"],
+        top: json['top'],
+        bottom: json['bottom'],
+        left: json['left'],
+        right: json['right'],
       );
 
   Map<String, dynamic> toJson() => {
-        "top": top,
-        "bottom": bottom,
-        "left": left,
-        "right": right,
+        'top': top,
+        'bottom': bottom,
+        'left': left,
+        'right': right,
       };
 }
 
@@ -164,6 +166,6 @@ class Landmark {
   Offset point;
 
   factory Landmark.fromJson(Map<dynamic, dynamic> json) => Landmark(
-      type: json["type"],
+      type: json['type'],
       point: Offset(json['point']['x'], json['point']['y']));
 }
